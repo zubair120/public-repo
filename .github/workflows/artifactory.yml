@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@latest
       - name: Setup JFrog CLI
-        uses: actions/setup-jfrog-cli@v4
+        uses: jfrog/setup-jfrog-cli@latest
         env:
           # JFrog platform url (for example: https://acme.jfrog.io)
           JF_URL: https://dev.packages.broadcom.com
