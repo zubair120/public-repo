@@ -32,7 +32,7 @@ jobs:
         env:
           # JFrog platform url (for example: https://acme.jfrog.io)
           JF_URL: https://dev.packages.broadcom.com
-          
+          JFROG_CLI_LOG_LEVEL: DEBUG
         with:
           # Name of the OIDC provider as specified on the OIDC integration page in the JFrog Platform
           oidc-provider-name: githubcom
@@ -40,16 +40,21 @@ jobs:
 
       - name: Run JFrog CLI
         run: |
-          echo "JF_URL" 
-          echo "JF_URL_DEV"
-          echo "oidc-provider-name"
-          echo "oidc-audience"
-          
-          # Ping the server
+          echo "===== JF env ====="
+          echo "JF_URL=$JF_URL"
+          echo "JFROG_CLI_SERVER_ID=${JFROG_CLI_SERVER_ID:-<unset>}"
+          echo "SETUP_JFROG_CLI_SERVER_ID=${SETUP_JFROG_CLI_SERVER_ID:-<unset>}"
+          echo "Token set? $([ -n \"$JF_ACCESS_TOKEN\" ] && echo yes || echo no)"
+          echo "Token length: ${#JF_ACCESS_TOKEN}"
+
+          echo "===== jf config show ====="
+          jf config show || true
+
+          echo "===== jf c show (JSON) ====="
+          jf c show --format=json || true
+
+          echo "===== ping ====="
           jf rt ping
-          # Collect environment variables for the build
           jf rt bce
-          # Collect VCS details from git and add them to the build
           jf rt bag
-          # Publish build info
           jf rt bp
