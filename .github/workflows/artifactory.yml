@@ -25,6 +25,7 @@ jobs:
             "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=githubcom" | jq -r .value)
           echo "===== OIDC JWT claims ====="
           echo "$ID_TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
+
           
       - name: Setup JFrog CLI
         uses: zubair120/setup-jfrog-cli@1.0
