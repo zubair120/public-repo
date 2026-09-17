@@ -50,6 +50,9 @@ jobs:
           echo "===== jf config show ====="
           jf config show || true
 
+          echo "===== use OIDC server ====="
+          jf config use setup-jfrog-cli-server
+          
           echo "===== jf c show (JSON) ====="
           jf c show --format=json || true
 
