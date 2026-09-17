@@ -12,6 +12,20 @@ jobs:
     steps:
       - name: Checkout
         uses: zubair120/checkout@1.0
+  # Adding as part of support case to capture the token ID
+      - name: Show runner egress IP
+        run: |
+          echo "Runner hostname: $(hostname)"
+          echo "Egress IP (ifconfig.me): $(curl -s https://ifconfig.me)"
+          echo "Egress IP (ipify): $(curl -s https://api.ipify.org)"
+
+      - name: Decode OIDC token
+        run: |
+          ID_TOKEN=$(curl -sLS -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=githubcom" | jq -r .value)
+          echo "===== OIDC JWT claims ====="
+          echo "$ID_TOKEN" | cut -d. -f2 | base64 -d 2>/dev/null | jq .
+          
       - name: Setup JFrog CLI
         uses: zubair120/setup-jfrog-cli@1.0
         env:
